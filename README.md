@@ -1,24 +1,8 @@
-# evilbot
-stake.com, stake.us, primedice bot by me with ❤
+# StakeBOT
+stake.com, stake.us, bot
 
-a javascript coded bot for Stake, Primedice<br />
+a javascript coded bot for Stake<br />
 the strategy script must be coded in javascript (JsMode), or can run Lua script too. (LuaMode) 
-
-# Videos: <br /> 
-install extension: [https://vimeo.com/1092943750](https://vimeo.com/1092943750) <br />
-demo: https://www.youtube.com/watch?v=mtVi5s4OnkY
-# Info: <br />
-Please give a Star on the repo in case you liked/used it. Thank you!
-
-<b>Donate:</b> https://ko-fi.com/poky <br />
-https://cwallet.com/t/YHT4YK3M
-
-<b>Discord</b>: fisk_992 <br />
-<b>Stake</b>: poky1084 <br />
-<b>Telegram:</b>: https://t.me/poky_1084
-
-![Screenshot 2025-06-21 191559](https://github.com/user-attachments/assets/2f7229be-e874-4ea9-b459-415c0adcf44b)
-
 
 
 # Use: <br />
