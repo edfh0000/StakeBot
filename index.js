@@ -1,123 +1,186 @@
- document.body.insertAdjacentHTML("beforebegin", `<body><div id="botWrapLicenseBox">
+document.body.insertAdjacentHTML("beforebegin", `<body><div id="botWrapLicenseBox">
       <style>
+        /* Modern Design Refresh - General Styles */
+        :root {
+            --dark-bg-primary: #1a1c24;
+            --dark-bg-secondary: #242833;
+            --dark-bg-tertiary: #2e3444;
+            --primary-accent: #007bff;
+            --primary-accent-hover: #0056b3;
+            --text-primary: #e6e6e6;
+            --text-secondary: #a0a0a0;
+            --border-color: #3a4152;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
         .bot-input {
           all: revert;
-          padding: 2px;
-          border: 1px solid #ccc;
-          border-radius: 3px;
+          background-color: var(--dark-bg-secondary);
+          color: var(--text-primary);
+          border: 1px solid var(--border-color);
+          border-radius: 5px;
+          padding: 5px 8px;
+          transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .bot-input:focus {
+            outline: none;
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
         }
         
         .btn-grad {
           all: revert;
           cursor: pointer;
-          background-image: linear-gradient(to right, #ffb347 0%, #ffcc33  51%, #ffb347  100%);
+          background-color: var(--primary-accent);
+          color: white;
+          font-family: var(--font-family);
+          font-weight: 600;
+          font-size: 14px;
           text-align: center;
-          transition: 0.5s;
-          padding: 3px;
-          background-size: 200% auto;
-          border: #ffc107;
-          border-radius: 3px;
+          transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+          padding: 8px 12px;
+          border: none;
+          border-radius: 5px;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         
         .btn-grad:hover {
-          background-position: right center;
-          text-decoration: none;
+          background-color: var(--primary-accent-hover);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
         
         .btn-grad:active {
-          opacity: .65;
+          transform: translateY(0);
+          opacity: .9;
         }
         
         .btn-grad:disabled {
-          cursor: auto;
-          opacity: .65;
-          color: #fff;
+          cursor: not-allowed;
+          background-color: var(--dark-bg-tertiary);
+          color: var(--text-secondary);
+          opacity: 0.7;
+          transform: translateY(0);
         }
 
         #botLicenseAlert {
           text-align: left!important;
-          color: red;
+          color: var(--danger-color);
           margin-top: 5px;
         }
       </style>
 
       </div><div id="botWrap"><style>
+/* Modern Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
-
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--dark-bg-secondary);
 }
-
 ::-webkit-scrollbar-thumb {
-  background: #888;
+  background: var(--dark-bg-tertiary);
+  border-radius: 4px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: var(--border-color);
 }
 
+/* Main Bot Container */
 #bot {
   all: revert;
   width: 1000px;
-  font-family: "Courier New", monospace;
-  font-size: 12px!important;
+  font-family: var(--font-family);
+  font-size: 13px!important;
   text-align: left;
-  background: #036ffc;
-  color: #fff;
+  background: var(--dark-bg-primary);
+  color: var(--text-primary);
   line-height: 1.5!important;
   position: absolute;
   z-index: 2147483002;
-  border: 0.6px solid #ccc;
-  border-radius: 3px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
   top: 50%; 
   left: 50%;
   transform: translate(-50%, -50%);
   opacity: 1;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  overflow: hidden; /* To contain children with border-radius */
 }
 
+/* Header & Footer */
 #botHeader,
 #botFooter {
   cursor: move;
-  height: 20px;
-  padding: 3px 5px;
+  height: 25px;
+  padding: 5px 10px;
+  background-color: var(--dark-bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+}
+#botFooter {
+    border-top: 1px solid var(--border-color);
+    border-bottom: none;
 }
 
 .bot-toggle {
   cursor: pointer;
   padding: 5px;
   z-index: 2147483003;
+  font-weight: bold;
 }
 
+/* Main Menu Bar */
 #botMenu {
-  padding: 3px;
+  padding: 8px 10px;
+  background-color: var(--dark-bg-secondary);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 #botMenu select,
 #botMenu span input[type=number] {
   all: revert;
-  background: #fff!important;
-  padding: 3px 5px;
-  border: 1px solid #ccc;
-  border-radius: 0;
-  border-radius: 3px;
+  background: var(--dark-bg-tertiary)!important;
+  color: var(--text-primary);
+  padding: 6px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  font-family: var(--font-family);
+  font-size: 13px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#botMenu select:focus,
+#botMenu span input[type=number]:focus {
+    outline: none;
+    border-color: var(--primary-accent);
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
 
 #botMenu span input[type=number] {
   width: 86px;
 }
 
+/* Modern Switch Toggle */
 .switch {
   position: relative;
   display: inline-block;
   width: 45px;
-  height: 19px;
-  background: #03c6fc;
+  height: 24px;
+  background: var(--dark-bg-tertiary);
+  border-radius: 12px;
 }
 
 .switch input { 
+  opacity: 0;
   width: 0;
   height: 0;
 }
@@ -130,7 +193,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  border-radius: 3px;
+  border-radius: 12px;
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -139,47 +202,56 @@
   content: "";
   position: absolute;
   background: white;
-  height: 13px;
-  width: 13px;
+  height: 18px;
+  width: 18px;
   left: 3px;
-  bottom: 3.5px;
-  border-radius: 3px;
+  bottom: 3px;
+  border-radius: 50%;
   -webkit-transition: .3s;
   transition: .3s;
 }
 
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+input:checked + .slider {
+  background-color: var(--primary-accent);
 }
 
+input:checked + .slider:before {
+  -webkit-transform: translateX(21px);
+  -ms-transform: translateX(21px);
+  transform: translateX(21px);
+}
+
+/* Button Styles (Re-applied for consistency) */
 .btn-grad {
   all: revert;
   cursor: pointer;
   text-align: center;
-  transition: 0.5s;
-  padding: 3px;
-  background-size: 200% auto;
-  border: #ffc107;
-  border-radius: 3px;
-  background-color: #03c6fc;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--primary-accent);
+  color: white;
+  font-family: var(--font-family);
+  font-weight: 600;
 }
 
 .btn-grad:hover {
-  background-position: right center;
+  background-color: var(--primary-accent-hover);
   text-decoration: none;
+  transform: translateY(-2px);
 }
 
 .btn-grad:active {
-  opacity: .65;
+  opacity: .9;
+  transform: translateY(0);
 }
 
 .btn-grad:disabled {
-  cursor: auto;
-  opacity: .65;
-  color: #fff;
+  cursor: not-allowed;
+  background-color: var(--dark-bg-tertiary);
+  opacity: .7;
+  color: var(--text-secondary);
 }
 
 .btn-control {
@@ -190,64 +262,78 @@ input:checked + .slider:before {
 #botOpenLUAScript,
 #botOpenJSScript {
   all: revert;
+  color: var(--text-primary);
 }
 
+/* Chart & History Section */
 #botChart,
 #botWrapHistory {
   height: 200px;
-  padding: 3px;
+  padding: 5px;
+  background-color: var(--dark-bg-secondary);
+  border-radius: 6px;
+  margin: 5px;
 }
 
 #botWrapHistory {
-  overflow-x: auto;
+  overflow: auto;
 }
 
 #botWrapHistory table {
+  width: 100%;
   border-collapse: collapse;
-  font-size: 11px!important;
+  font-size: 12px!important;
 }
 
 #botWrapHistory table thead tr th {
   text-align: left;
-  padding: 1px;
-  border: 1px solid #ccc;
+  padding: 8px 6px;
+  border-bottom: 2px solid var(--border-color);
+  color: var(--text-secondary);
+  font-weight: 600;
+  background-color: var(--dark-bg-tertiary);
 }
 
 #botHistory tr {
-  border-bottom: 1px solid #fff;
-  color: #000!important;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary)!important;
 }
 
 #botHistory tr:last-child {
-  border-bottom: 1px solid #ccc;
+  border-bottom: none;
 }
 
 #botHistory tr td {
   all: revert;
+  font-family: var(--font-family);
   white-space: nowrap;
-  padding: 1.5px;
-  border-right: 1px solid #fff;
-  border-left: 1px solid #fff;
+  padding: 6px;
+  border-right: none;
+  border-left: none;
 }
 
-#botHistory tr td:first-child {
-  border-left: 1px solid #ccc;
+/* History Row Win/Loss Highlight */
+#botHistory tr[style*="background: rgb(145, 241, 144)"] { /* Win */
+    background: rgba(40, 167, 69, 0.15) !important;
+    border-left: 3px solid var(--success-color);
+}
+#botHistory tr[style*="background: rgb(255, 192, 203)"] { /* Loss */
+    background: rgba(220, 53, 69, 0.15) !important;
+    border-left: 3px solid var(--danger-color);
 }
 
-#botHistory tr td:last-child {
-  border-right: 1px solid #ccc;
-}
 
 #botHistory tr td input {
   all: revert;
 }
 
+/* Advanced Sections */
 #botAdvancedMode,
 #botWrapMode,
 #botWrapVariables,
 #botWrapFunctions,
 #botWrapTips {
-  overflow: scroll;
+  overflow: auto;
   height: 340px;
 }
 
@@ -255,46 +341,34 @@ input:checked + .slider:before {
 #botWrapFunctions pre,
 #botWrapTips pre {
   all: revert;
-  background: #fff;
-  color: #000;
+  font-family: "Courier New", monospace;
+  background: var(--dark-bg-secondary);
+  color: var(--text-primary);
   margin: 0;
+  padding: 15px;
+  border-radius: 6px;
 }
 
-.botSim {
+/* Code View Toggles */
+.botSim, .code-lua, .code-js, #botWrapLog {
 	overflow: auto;
-	visibility : visible;
+	visibility: visible;
 	grid-area: 1 / 1;
 	width: 100%;
-	overflow: auto
 }
-.code-lua {
-	overflow: auto;
-	visibility : hidden;
-	grid-area: 1 / 1;
-	width: 100%;
-	overflow: auto
+.code-lua, .code-js, #botWrapLog, .botSim {
+	visibility: hidden;
 }
-.code-js {
-	visibility : visible;
-	z-index: 10;
-	grid-area: 1 / 1;
-	overflow: auto;
-	width: 100%;
+#botWrapMode > div > div.code-container > .code-js { /* Default visible */
+    visibility: visible;
 }
 
-#botWrapLog {
-	visibility : hidden;
-	z-index: 10;
-	grid-area: 1 / 1;
-	overflow: scroll;
-}
-
-#botLog li {
-	font-size: 6px!important;
-}
-
-#botSimLog {
-	font-size: 11px!important;
+#botWrapLog textarea, #botSimLog {
+    background: var(--dark-bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-family: "Courier New", monospace;
 }
 
 #botOpenScript {
@@ -304,42 +378,58 @@ input:checked + .slider:before {
 .CodeMirror {
    height: 299px;
   min-height: 299px;
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
 }
 
+/* Stats Section */
 .bot-stats,
 .bot-flex-container {
     display: flex;
     align-items: stretch;
-    font-weight: bold;
+    font-weight: normal;
     font-size: 14px;
-    position: relative; /* Enable absolute positioning inside */
-  }
+    position: relative;
+    padding: 10px 5px;
+}
 
   .overlay-text {
 	font-size: 30px;
     position: absolute;
-    top: 10px; /* Adjust position as needed */
+    top: 10px;
     left: 390px;
-    color: #000; /* or white, depending on background */
-    background: rgba(255, 255, 255, 0.7); /* optional background */
+    color: var(--text-primary);
+    background: rgba(0, 0, 0, 0.5);
     padding: 4px 8px;
     border-radius: 4px;
-    pointer-events: none; /* So it doesn't block clicks */
+    pointer-events: none;
   }
 
 .bot-stats div {
   flex-grow: 1;
-  padding: 2px 32px;
+  padding: 5px 20px;
+  border-right: 1px solid var(--border-color);
+}
+.bot-stats div:last-child {
+    border-right: none;
 }
 
 .bot-stats div li {
   list-style: none;
+  margin-bottom: 8px;
 }
+.bot-stats .float-left {
+    color: var(--text-secondary);
+}
+.bot-stats .float-right {
+    font-weight: 600;
+}
+
 
 .bot-advanced-item {
   line-height: 2;
   padding: 3px 0;
-  border-bottom: 1px solid #e7e7e7;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .bot-advanced-item:last-child {
@@ -348,6 +438,11 @@ input:checked + .slider:before {
 
 .bot-advanced-item input {
   all: revert;
+  background-color: var(--dark-bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 4px;
 }
 
 .bot-advanced-item input[type=number] {
@@ -370,7 +465,11 @@ input:checked + .slider:before {
 
 .bot-menu2 {
   display: flex;
-  font-size: 11px!important;
+  font-size: 12px!important;
+  background: var(--dark-bg-secondary);
+  padding: 5px;
+  align-items: center;
+  justify-content: center;
 }
 
 .bot-menu2 span {
@@ -382,23 +481,19 @@ input:checked + .slider:before {
 #botControlMenu {
   display: flex; flex-wrap: wrap;
   margin-top: 3px;
+  gap: 10px;
 }
 
 #botTabMenu button,
 #botControlMenu button {
   flex-basis: 0;
   flex-grow: 1;
-  margin: 3px;
+  margin: 0; /* Remove margin, use gap instead */
 }
 
 
 /**
- *
- * In this pen:
- * added stylesheets with CDN:
- *   -  //cdnjs.cloudflare.com/ajax/libs/codemirror/5.13.4/codemirror.css
- *   -  //cdnjs.cloudflare.com/ajax/libs/codemirror/5.13.4/theme/material.css
- *
+ * CodeMirror styles are linked via CDN, this section is for base HTML element styling.
  */
 
 *, *:after, *:before {
@@ -406,161 +501,24 @@ input:checked + .slider:before {
 	padding: 0;
 	box-sizing: border-box;
 }
-html,
-body {
-	height: 100%;
-}
+
 html {
 	text-rendering: optimizeLegibility;
 	line-height: 1.5em;
 	letter-spacing: .3px;
-	font-family: "Poppins", sans-serif;
-	-webkit-text-size-adjust: 100%;
+	font-family: var(--font-family);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
-body {
-}
-html {
-	font-family: "Geneva", sans-serif;
-}
 
-
-/* ----------
-	WRAPPERS & CONTAINERS
----------- */
-section {
-	position: relative;
-	padding: 2.5rem 0;
-}
-.container {
-	position: relative;
-	margin: auto;
-	padding: 0 20px;
-	width: 100%;
-	max-width: 970px;
-}
-section:after, .container:after, .row:after {
-	display: table;
-	content: "";
-	clear: both;
-}
-
-
-/* ----------
-	ANHOR TAG
----------- */
-a {
-	cursor: pointer;
-	outline: 0;
-}
-h1 > a,
-h2 > a,
-h3 > a,
-h4 > a,
-h5 > a,
-h6 > a,
-p  > a {
-	color: #ed9d0a;
-	text-decoration: none;
-}
-h1 > a:hover,
-h2 > a:hover,
-h3 > a:hover,
-h4 > a:hover,
-h5 > a:hover,
-h6 > a:hover,
-p  > a:hover {
-	text-decoration: underline;
-}
-
-
-/* ----------
-	TYPOGRAPHY
----------- */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-ul {
-	margin-bottom: 1rem;
-	-ms-word-break: break-word;
-	-ms-word-wrap: break-word;
-	-webkit-word-break: break-word;
-	-webkit-word-wrap: break-word;
-	word-break: break-word;
-	word-wrap: break-word;
-}
-h1:last-child,
-h2:last-child,
-h3:last-child,
-h4:last-child,
-h5:last-child,
-h6:last-child,
-p:last-child,
-blockquote:last-child,
-ul:last-child {
-	margin-bottom: 0;
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	line-height: 1.25em;
-	letter-spacing: 1px;
-	font-weight: 600;
-}
-h1:not(:first-child),
-h2:not(:first-child),
-h3:not(:first-child),
-h4:not(:first-child),
-h5:not(:first-child),
-h6:not(:first-child) {
-	margin-top: 1.5em;
-}
-h1 {
-	letter-spacing: 2px;
-	font-size: 1.75rem;
-}
-h2 {
-	font-size: 1.5rem;
-}
-h1 strong,
-h2 strong,
-h3 strong,
-h4 strong,
-h5 strong,
-h6 strong {
-	font-weight: 700;
-}
-p {
-	line-height: 1.5em;
-}
-ul {
-	padding-left: 1.5rem;
-}
-hr {
-	border: 0;
-	border-top: 1px solid #e1e1e1;
-}
-
-
-/* ----------
-	CODE BLOCK
----------- */
+/* Code Block Container */
 .code-container {
 	display: grid;
 	position: relative;
 	margin-bottom: 1.5rem;
-	overflow: auto;
-	border-radius: 3px;
-	box-shadow: 3px 3px 6px rgba(0, 0, 0, .3);
+	overflow: hidden; /* For border-radius */
+	border-radius: 6px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, .3);
 	width: 100%;
 }
 .code-container:last-child {
@@ -569,137 +527,110 @@ hr {
 }
 
 .btn {
-	background-color: #ed9d0a;
+	background-color: var(--primary-accent);
 	color: #fff;
-	padding: 4px 10px;
+	padding: 8px 15px;
 	text-decoration: none;
-	border-radius: 3px;
-	box-shadow: 0 8px 6px -6px rgba(0, 0, 0, .15);
-	-webkit-backface-visibility: hidden;
-	-webkit-transition: 200ms -webkit-transform ease, 200ms transform ease, 200ms box-shadow ease;
-			transition: 200ms -webkit-transform ease, 200ms transform ease, 200ms box-shadow ease;
+	border-radius: 5px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, .15);
+	transition: 200ms all ease;
 }
 .btn:hover {
-	box-shadow: 0 6px 6px -4px rgba(0, 0, 0, .2);
-	-webkit-transform: translateY(-2px);
-			transform: translateY(-2px);
+	box-shadow: 0 6px 8px rgba(0, 0, 0, .2);
+	transform: translateY(-2px);
 }
-.btn.btn-left {
-	float: left;
-}
-.btn.btn-right {
-	float: right;
-}
+.btn.btn-left { float: left; }
+.btn.btn-right { float: right; }
 
-
-.row {
-	margin-bottom: 1.5rem;
-	width: 100%;
-}
-.row:last-child {
-	margin-bottom: 0;
-}
-
-#runcmd {
-	width: 30%
-}
-
+#runcmd { width: 30% }
 #runinput {
-	width: 60%
+	width: 68%;
+    background: var(--dark-bg-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: 5px;
+    padding: 5px;
 }
 
 .fastmode{
-     display: flex;
+    display: flex;
     align-items: center;
-    justify-content: flex-end; /* Aligns contents to the right inside .fastmode */
+    justify-content: flex-end;
     text-align: right;
     padding: 10px;
-     font-weight: bold;
-	 position: absolute; /* Or use relative/other as needed */
-    top: 40px;
+    font-weight: bold;
+	position: absolute;
+    top: 0px; /* Adjusted position */
     right: 10px;
 }
+a, a:link {
+  color: var(--primary-accent);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
 a:hover {
-  color: white;
+  color: var(--primary-accent-hover);
   text-decoration: underline;
 }
-a:link {
-  color: white;
-  text-decoration: underline;
+#infobar a, #infobar a:link {
+    color: var(--text-primary);
+}
+#infobar a:hover {
+    color: var(--primary-accent);
 }
 
 #result {
-	font-size: 16px;
+	font-size: 18px;
+    font-weight: bold;
 }
 
-#userBal {
+#userBal, #botStopOnWinButton, #botStopButton, #botStartButton {
 	font-size: 14px;
+    font-weight: 600;
 }
 
-#botStopOnWinButton {
-	font-size: 14px;
-}
 
-#botStopButton {
-	font-size: 14px;
-}
-
-#botStartButton {
-	font-size: 14px;
-}
-
+/* Modern Loader Animation */
 .loader {
   display: none;
   color: #ffffff;
-  font-size: 19px;
-  overflow: hidden;
+  font-size: 20px;
   width: 1em;
   height: 1em;
-  border-radius: 30%;
+  border-radius: 50%;
+  position: relative;
+  text-indent: -9999em;
+  animation: load-anim 1.1s infinite linear;
   transform: translateZ(0);
-  animation: mltShdSpin 1.7s infinite ease, round 1.7s infinite ease;
 }
 
-@keyframes mltShdSpin {
-  0% {
-    box-shadow: 0 -0.83em 0 -0.4em,
-    0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em,
-    0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+@keyframes load-anim {
+  0%, 100% {
+    box-shadow: 0 -3em 0 0.2em, 2em -2em 0 0em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 0;
   }
-  5%,
-  95% {
-    box-shadow: 0 -0.83em 0 -0.4em, 
-    0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 
-    0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+  12.5% {
+    box-shadow: 0 -3em 0 0, 2em -2em 0 0.2em, 3em 0 0 0, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
   }
-  10%,
-  59% {
-    box-shadow: 0 -0.83em 0 -0.4em, 
-    -0.087em -0.825em 0 -0.42em, -0.173em -0.812em 0 -0.44em, 
-    -0.256em -0.789em 0 -0.46em, -0.297em -0.775em 0 -0.477em;
+  25% {
+    box-shadow: 0 -3em 0 -0.5em, 2em -2em 0 0, 3em 0 0 0.2em, 2em 2em 0 0, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
   }
-  20% {
-    box-shadow: 0 -0.83em 0 -0.4em, -0.338em -0.758em 0 -0.42em,
-     -0.555em -0.617em 0 -0.44em, -0.671em -0.488em 0 -0.46em, 
-     -0.749em -0.34em 0 -0.477em;
+  37.5% {
+    box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 0, 2em 2em 0 0.2em, 0 3em 0 0em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
   }
-  38% {
-    box-shadow: 0 -0.83em 0 -0.4em, -0.377em -0.74em 0 -0.42em,
-     -0.645em -0.522em 0 -0.44em, -0.775em -0.297em 0 -0.46em, 
-     -0.82em -0.09em 0 -0.477em;
+  50% {
+    box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 0, 0 3em 0 0.2em, -2em 2em 0 0, -3em 0 0 -1em, -2em -2em 0 -1em;
   }
-  100% {
-    box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 
-    0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+  62.5% {
+    box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 0, -2em 2em 0 0.2em, -3em 0 0 0, -2em -2em 0 -1em;
   }
-}
-
-@keyframes round {
-  0% { transform: rotate(0deg) }
-  100% { transform: rotate(360deg) }
+  75% {
+    box-shadow: 0em -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0.2em, -2em -2em 0 0;
+  }
+  87.5% {
+    box-shadow: 0em -3em 0 0, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0, -2em -2em 0 0.2em;
+  }
 }
  
-   
 .button-wrapper {
   position: relative;
   display: inline-block;
@@ -707,11 +638,11 @@ a:link {
 
 .button-wrapper .loader {
   position: absolute;
-  top: 30%;
-  left: 46%;
-  transform: translate(-50%, -50%) rotateZ(45deg);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 2;
-  pointer-events: none; /* so the button is still clickable if needed */
+  pointer-events: none;
 }
 
 #timerDown {
@@ -725,12 +656,23 @@ a:link {
   left: 46%;
   z-index: 2;
 }
+#tokenkey { /* Style API key input */
+    background-color: var(--dark-bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    color: var(--text-primary);
+    padding: 4px 8px;
+    width: 33%;
+}
+#infospeed, #infobar {
+    color: var(--text-secondary);
+}
 </style>
 <center>
 <div id="bot">
   <div id="botHeader">
-    <div class="clearfix">
-      <div class="float-left" style="padding-left: 5px;">
+    <div class="clearfix" style="width: 100%;">
+      <div class="float-left" style="padding-left: 5px; font-weight: bold;">
         #evilbot | stake.com | stake.us | primedice
       </div>
       <div class="float-right">
@@ -779,7 +721,7 @@ a:link {
       </select>
 	   <select id="mirrors" class="mirrors">
       </select>
-	  <span style="font-size: 13px;font-weight: bold;">API: </span><input type="password" id="tokenkey" value="" style="width: 33%;color: white;border-style: solid;border-radius: 5px;border-width: 1px;" placeholder="Stake or Primedice api key here">
+	  <span style="font-size: 13px;font-weight: bold; color: var(--text-secondary);">API: </span><input type="password" id="tokenkey" value="" style="/* inlined for specificity */ width: 33%;color: white;border-style: solid;border-radius: 5px;border-width: 1px;" placeholder="Stake or Primedice api key here">
       
 	  <span>
         Records
@@ -797,23 +739,23 @@ a:link {
     </div>
 
     <div class="bot-menu2">
-    <center>
-      <span style="padding-top: 19px;">
+    <center style="display: flex; gap: 10px; align-items: center; width: 100%; position: relative;">
+      <span>
         <button class="btn-grad" id="resetstat">ResetStats</button>
       </span>
-      <span style="padding-top: 19px;">
+      <span>
         <button class="btn-grad" id="resetChart">ResetChart</button>
       </span>
-      <span style="padding-top: 19px;">
+      <span>
         <button class="btn-grad" id="deleteTable">ResetHistory</button>
       </span>
-      <span style="padding-top: 19px;">
+      <span>
         <button class="btn-grad" id="deleteLog">ResetLog</button>
       </span>
-      <span style="padding-top: 19px;">
+      <span>
         <button class="btn-grad" id="resetsee">ResetSeed</button>
       </span>
-      <span style="padding-top: 19px;">
+      <span>
         <button class="btn-grad" id="resetAlles">ResetAll</button>
       </span>
 	  <div class="fastmode"> Fast Mode:
@@ -864,7 +806,7 @@ a:link {
         </li>
       </div>
 
-      <div style="flex-grow: 1; padding: 2px 32px;">
+      <div style="flex-grow: 1;">
         <li class="clearfix">
           <span class="float-left">Bets:</span>
           <span class="float-right"><span id="botBets">0</span></span>
@@ -887,7 +829,7 @@ a:link {
     <div class="bot-flex-container" id="botWrapControl">
 	  
       <div style="flex-grow: 1; width: 50%;">
-        <div id="chartContainer" style="height: 195px; width:100%;"></div>
+        <div id="chartContainer" style="height: 195px; width:100%; border-radius: 6px; padding: 5px; margin-bottom: 5px;"></div>
 
         <div id="botWrapHistory">
           <table>
@@ -911,17 +853,17 @@ a:link {
         </div>
       </div>
 
-      <div style="flex-grow: 1; width: 50%; padding-left: 5px;">
+      <div style="flex-grow: 1; width: 50%; padding-left: 10px;">
         <div id="botTabMenu">
-          <button class="btn-grad" id="botShowMode"  >Code</button>
-          <button class="btn-grad" id="botShowLog" >Log</button>
-		  <button class="btn-grad" id="botShowSim" >Sim (dice)</button>
+          <button class="btn-grad" id="botShowMode">Code</button>
+          <button class="btn-grad" id="botShowLog">Log</button>
+		  <button class="btn-grad" id="botShowSim">Sim (dice)</button>
         </div>
 
         <div>
           <div id="botWrapMode">
             <div id="botLUAMode">
-              <div style="padding: 5px 2px 5px">
+              <div style="padding: 10px 2px 5px; display: flex; gap: 10px;">
                 <button class="btn-grad" id="botSaveScriptButton">Save</button>
                 <input style="margin: 0 3px;" type="file" id="botOpenScript" accept=".txt, .js, .lua">
               </div>
@@ -1037,7 +979,7 @@ Hold top or bottom area to move the bot around</pre>
           <button id="botStartButton" class="btn-grad btn-control fontbigger" >Start</button>
           <button id="botStopButton" class="btn-grad btn-control fontbigger" >Stop</button>
          <div class="button-wrapper">
-			<button id="result" class="btn-grad btn-control fontbigger" style="width:250px;height:45px;background-color:#03A8FC;color:white;"></button>
+			<button id="result" class="btn-grad btn-control fontbigger" style="width:250px;height:45px;background-color: var(--dark-bg-tertiary); color:white;"></button>
 			<span class="loader"></span>
 			<span id="timerDown"></span>
 		  </div>
@@ -1047,7 +989,7 @@ Hold top or bottom area to move the bot around</pre>
       </div>
 	  </div>
 	   <div id="botFooter">
-    <div class="clearfix">
+    <div class="clearfix" style="width: 100%;">
       <div id="infobar" class="float-left" style="padding-left: 5px;color:white"> 
         <a href="https://github.com/poky1084" target="_blank" rel="noopener noreferrer">github.com/poky1084</a> | Discord: fisk_992 | Telegram: <a href="https://t.me/poky_1084" target="_blank" rel="noopener noreferrer">https://t.me/poky_1084</a>  
       </div>
@@ -2276,10 +2218,20 @@ function drawChart() {
     dps = [{ x: betcount, y: profit_total }]
     chart = new CanvasJS.Chart('chartContainer', {
         backgroundColor: "transparent",
-        theme: 'light2',
+        theme: 'light2', // 'light2' works well with dark themes by providing contrast
+        axisX: {
+            lineColor: "var(--border-color)",
+            labelFontColor: "var(--text-secondary)",
+            tickColor: "var(--border-color)"
+        },
+        axisY: {
+            gridColor: "rgba(128, 128, 128, 0.2)",
+            lineColor: "var(--border-color)",
+            labelFontColor: "var(--text-secondary)",
+            tickColor: "var(--border-color)"
+        },
         title: {
-            //text: BOT_URL,
-            fontColor: 'white',
+            fontColor: 'var(--text-primary)',
             fontSize: 20
         },
         data: [{
@@ -2295,9 +2247,11 @@ function updateChart() {
     dps.push({
         x: betcount,
         y: profit_total,
-        color: color
-    })
-    if (dps[dps.length - 2]) dps[dps.length - 2].lineColor = color;
+        color: color === 'green' ? 'var(--success-color)' : 'var(--danger-color)'
+    });
+    if (dps[dps.length - 2]) {
+        dps[dps.length - 2].lineColor = color === 'green' ? 'var(--success-color)' : 'var(--danger-color)';
+    }
     if (dps.length > 100) dps.shift();
     chart.render();
 }
@@ -3357,9 +3311,11 @@ function data(json){
 			row.appendChild(tdBetID);	
 			
 			if(win){
-				row.style.background = "#91F190";
+				row.style.background = "rgba(40, 167, 69, 0.15)";
+                row.style.borderLeft = "3px solid var(--success-color)";
 			} else {
-				row.style.background = "#FFC0CB";
+				row.style.background = "rgba(220, 53, 69, 0.15)";
+                row.style.borderLeft = "3px solid var(--danger-color)";
 			}
 			
 			table.prepend(row);
