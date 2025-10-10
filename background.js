@@ -2,7 +2,7 @@
 chrome.action.onClicked.addListener((tab) => {
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    files: ['inject.js'] // this is your evilbot code
+    files: ['inject.js'] 
   });
 });*/
 
@@ -22,3 +22,4 @@ chrome.webNavigation.onCompleted.addListener((details) => {
   url: targetSites.map(host => ({ hostEquals: host }))
 
 });
+
