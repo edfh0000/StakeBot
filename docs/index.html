@@ -211,6 +211,44 @@
             opacity: 0.8;
         }
 
+        .info-tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            margin-left: 5px;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9em;
+        }
+        
+        .info-tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            white-space: normal;
+            width: 250px;
+            font-size: 0.85em;
+            line-height: 1.4;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        .info-tooltip:hover::before {
+            content: '';
+            position: absolute;
+            bottom: 115%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: rgba(0,0,0,0.9);
+            z-index: 1000;
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -232,12 +270,103 @@
             100% { transform: rotate(360deg); }
         }
 
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
         @media (max-width: 768px) {
             .grid-2 {
                 grid-template-columns: 1fr;
             }
             .header h1 {
                 font-size: 1.8em;
+            }
+            
+            #after130Container > div,
+            #after160Container > div,
+            #after190Container > div,
+            #after220Container > div,
+            #after400Container > div,
+            #after450Container > div,
+            #after500Container > div {
+                padding: 15px !important;
+            }
+            
+            #after130Container > div > div:first-child,
+            #after160Container > div > div:first-child,
+            #after190Container > div > div:first-child,
+            #after220Container > div > div:first-child,
+            #after400Container > div > div:first-child,
+            #after450Container > div > div:first-child,
+            #after500Container > div > div:first-child {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)) !important;
+                gap: 8px !important;
+            }
+            
+            #after130Container > div > div:first-child > div,
+            #after160Container > div > div:first-child > div,
+            #after190Container > div > div:first-child > div,
+            #after220Container > div > div:first-child > div,
+            #after400Container > div > div:first-child > div,
+            #after450Container > div > div:first-child > div,
+            #after500Container > div > div:first-child > div {
+                padding: 8px !important;
+            }
+            
+            #after130Container > div > div:first-child > div > div:first-child,
+            #after160Container > div > div:first-child > div > div:first-child,
+            #after190Container > div > div:first-child > div > div:first-child,
+            #after220Container > div > div:first-child > div > div:first-child,
+            #after400Container > div > div:first-child > div > div:first-child,
+            #after450Container > div > div:first-child > div > div:first-child,
+            #after500Container > div > div:first-child > div > div:first-child {
+                font-size: 1.3em !important;
+            }
+            
+            #after130Container > div > div:first-child > div > div:nth-child(2),
+            #after160Container > div > div:first-child > div > div:nth-child(2),
+            #after190Container > div > div:first-child > div > div:nth-child(2),
+            #after220Container > div > div:first-child > div > div:nth-child(2),
+            #after400Container > div > div:first-child > div > div:nth-child(2),
+            #after450Container > div > div:first-child > div > div:nth-child(2),
+            #after500Container > div > div:first-child > div > div:nth-child(2) {
+                font-size: 0.95em !important;
+            }
+            
+            #colorStatsContainer > div,
+            #thirdStatsContainer > div {
+                grid-template-columns: 1fr !important;
+            }
+            
+            #topMultipliersContainer > div > div > div,
+            #limboStreaksContainer > div,
+            #diceExtremesContainer > div > div:last-child,
+            #diceStreaksContainer > div {
+                grid-template-columns: 1fr !important;
+            }
+            
+            #maxStreaksContainer {
+                grid-template-columns: 1fr !important;
+            }
+            
+            #avgFrequencyContainer {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
             }
         }
     </style>
@@ -319,39 +448,179 @@
                 <h3 style="color: #333; margin-bottom: 20px; font-size: 1.5em;">📊 Análisis Avanzado de Ruleta</h3>
                 
                 <div style="background: linear-gradient(135deg, #134e5e 0%, #71b280 100%); padding: 25px; border-radius: 15px; margin-bottom: 20px;">
-                    <h4 style="color: white; margin-bottom: 15px; font-size: 1.2em;">📊 Frecuencia de Rachas Consecutivas</h4>
-                    <p style="color: white; opacity: 0.9; margin-bottom: 20px; font-size: 0.95em;">Cuántas veces un número cualquiera no sale durante X tiradas consecutivas</p>
+                    <h4 style="color: white; margin-bottom: 15px; font-size: 1.2em;">
+                        📊 Frecuencia de Rachas Consecutivas
+                        <span class="info-tooltip" data-tooltip="Muestra cuántas veces un número cualquiera alcanzó exactamente X tiradas sin salir. Estas estadísticas NO son acumulativas.">ⓘ</span>
+                    </h4>
+                    <p style="color: white; opacity: 0.9; margin-bottom: 20px; font-size: 0.95em;">
+                        Cuántas veces un número cualquiera no sale durante X tiradas consecutivas<br>
+                        <strong>Nota:</strong> Cada contador es independiente (no acumulativo)
+                    </p>
                     <div id="streakFrequencyContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;"></div>
                 </div>
 
                 <div style="background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); padding: 25px; border-radius: 15px; margin-bottom: 20px;">
-                    <h4 style="color: white; margin-bottom: 15px; font-size: 1.2em;">🔥 Rachas Máximas sin Salir</h4>
+                    <h4 style="color: white; margin-bottom: 15px; font-size: 1.2em;">
+                        🔥 Rachas Máximas sin Salir
+                        <span class="info-tooltip" data-tooltip="Muestra el mayor número de tiradas consecutivas que cada número estuvo sin aparecer durante toda la sesión de juego.">ⓘ</span>
+                    </h4>
                     <div id="maxStreaksContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px;"></div>
                 </div>
 
                 <div style="background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%); padding: 25px; border-radius: 15px; margin-bottom: 20px;">
-                    <h4 style="color: white; margin-bottom: 15px; font-size: 1.2em;">📈 Frecuencia Media de Aparición</h4>
+                    <h4 style="color: white; margin-bottom: 15px; font-size: 1.2em;">
+                        📈 Frecuencia Media de Aparición
+                        <span class="info-tooltip" data-tooltip="Promedio de tiradas entre cada aparición del número. Un valor más bajo indica que el número apareció con más frecuencia.">ⓘ</span>
+                    </h4>
                     <div id="avgFrequencyContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px;"></div>
                 </div>
 
                 <div style="background: linear-gradient(135deg, #16a085 0%, #f4d03f 100%); padding: 25px; border-radius: 15px; margin-bottom: 20px;">
-                    <h4 style="color: white; margin-bottom: 15px; font-size: 1.2em;">⏱️ Media Aparición tras 130 Tiradas sin Salir</h4>
+                    <h4 style="color: white; margin-bottom: 15px; font-size: 1.2em;">
+                        ⏱️ Media Aparición tras 130 Tiradas sin Salir
+                        <span class="info-tooltip" data-tooltip="Cuando un número alcanza exactamente 130 tiradas sin salir, este dato muestra cuántas tiradas adicionales tardó en aparecer (promedio).">ⓘ</span>
+                    </h4>
+                    <p style="color: white; opacity: 0.9; margin-bottom: 15px; font-size: 0.9em;">
+                        Promedio de tiradas adicionales hasta que aparece el número
+                    </p>
                     <div id="after130Container"></div>
                 </div>
 
-                <div style="background: linear-gradient(135度, #2980b9 0%, #6dd5fa 50%, #ffffff 100%); padding: 25px; border-radius: 15px; margin-bottom: 20px;">
-                    <h4 style="color: white; margin-bottom: 15px; font-size: 1.2em;">⏱️ Media Aparición tras 160 Tiradas sin Salir</h4>
+                <div style="background: linear-gradient(135deg, #2980b9 0%, #6dd5fa 50%, #2c3e50 100%); padding: 25px; border-radius: 15px; margin-bottom: 20px;">
+                    <h4 style="color: white; margin-bottom: 15px; font-size: 1.2em;">
+                        ⏱️ Media Aparición tras 160 Tiradas sin Salir
+                        <span class="info-tooltip" data-tooltip="Cuando un número alcanza exactamente 160 tiradas sin salir, este dato muestra cuántas tiradas adicionales tardó en aparecer (promedio).">ⓘ</span>
+                    </h4>
+                    <p style="color: white; opacity: 0.9; margin-bottom: 15px; font-size: 0.9em;">
+                        Promedio de tiradas adicionales hasta que aparece el número
+                    </p>
                     <div id="after160Container"></div>
                 </div>
 
                 <div style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); padding: 25px; border-radius: 15px; margin-bottom: 20px;">
-                    <h4 style="color: white; margin-bottom: 15px; font-size: 1.2em;">⏱️ Media Aparición tras 190 Tiradas sin Salir</h4>
+                    <h4 style="color: white; margin-bottom: 15px; font-size: 1.2em;">
+                        ⏱️ Media Aparición tras 190 Tiradas sin Salir
+                        <span class="info-tooltip" data-tooltip="Cuando un número alcanza exactamente 190 tiradas sin salir, este dato muestra cuántas tiradas adicionales tardó en aparecer (promedio).">ⓘ</span>
+                    </h4>
+                    <p style="color: white; opacity: 0.9; margin-bottom: 15px; font-size: 0.9em;">
+                        Promedio de tiradas adicionales hasta que aparece el número
+                    </p>
                     <div id="after190Container"></div>
                 </div>
 
                 <div style="background: linear-gradient(135deg, #134e5e 0%, #71b280 100%); padding: 25px; border-radius: 15px;">
-                    <h4 style="color: white; margin-bottom: 15px; font-size: 1.2em;">⏱️ Media Aparición tras 220 Tiradas sin Salir</h4>
+                    <h4 style="color: white; margin-bottom: 15px; font-size: 1.2em;">
+                        ⏱️ Media Aparición tras 220 Tiradas sin Salir
+                        <span class="info-tooltip" data-tooltip="Cuando un número alcanza exactamente 220 tiradas sin salir, este dato muestra cuántas tiradas adicionales tardó en aparecer (promedio).">ⓘ</span>
+                    </h4>
+                    <p style="color: white; opacity: 0.9; margin-bottom: 15px; font-size: 0.9em;">
+                        Promedio de tiradas adicionales hasta que aparece el número
+                    </p>
                     <div id="after220Container"></div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%); padding: 25px; border-radius: 15px; margin-top: 20px;">
+                    <h4 style="color: white; margin-bottom: 15px; font-size: 1.2em;">
+                        ⏱️ Media Aparición tras 400 Tiradas sin Salir
+                        <span class="info-tooltip" data-tooltip="Cuando un número alcanza exactamente 400 tiradas sin salir, este dato muestra cuántas tiradas adicionales tardó en aparecer (promedio).">ⓘ</span>
+                    </h4>
+                    <p style="color: white; opacity: 0.9; margin-bottom: 15px; font-size: 0.9em;">
+                        Promedio de tiradas adicionales hasta que aparece el número
+                    </p>
+                    <div id="after400Container"></div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%); padding: 25px; border-radius: 15px; margin-top: 20px;">
+                    <h4 style="color: white; margin-bottom: 15px; font-size: 1.2em;">
+                        ⏱️ Media Aparición tras 450 Tiradas sin Salir
+                        <span class="info-tooltip" data-tooltip="Cuando un número alcanza exactamente 450 tiradas sin salir, este dato muestra cuántas tiradas adicionales tardó en aparecer (promedio).">ⓘ</span>
+                    </h4>
+                    <p style="color: white; opacity: 0.9; margin-bottom: 15px; font-size: 0.9em;">
+                        Promedio de tiradas adicionales hasta que aparece el número
+                    </p>
+                    <div id="after450Container"></div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #fc466b 0%, #3f5efb 100%); padding: 25px; border-radius: 15px; margin-top: 20px;">
+                    <h4 style="color: white; margin-bottom: 15px; font-size: 1.2em;">
+                        ⏱️ Media Aparición tras 500 Tiradas sin Salir
+                        <span class="info-tooltip" data-tooltip="Cuando un número alcanza exactamente 500 tiradas sin salir, este dato muestra cuántas tiradas adicionales tardó en aparecer (promedio).">ⓘ</span>
+                    </h4>
+                    <p style="color: white; opacity: 0.9; margin-bottom: 15px; font-size: 0.9em;">
+                        Promedio de tiradas adicionales hasta que aparece el número
+                    </p>
+                    <div id="after500Container"></div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); padding: 25px; border-radius: 15px; margin-top: 20px;">
+                    <h4 style="color: white; margin-bottom: 15px; font-size: 1.2em;">
+                        🎨 Estadísticas de Colores
+                        <span class="info-tooltip" data-tooltip="Analiza la frecuencia y rachas de colores (rojo, negro, verde). Muestra cuántas veces cada color apareció consecutivamente y cuánto tiempo estuvo sin aparecer.">ⓘ</span>
+                    </h4>
+                    <p style="color: white; opacity: 0.9; margin-bottom: 15px; font-size: 0.9em;">
+                        <strong>Nota:</strong> Estas estadísticas muestran rachas consecutivas independientes (no acumulativas)
+                    </p>
+                    <div id="colorStatsContainer"></div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); padding: 25px; border-radius: 15px; margin-top: 20px;">
+                    <h4 style="color: white; margin-bottom: 15px; font-size: 1.2em;">
+                        🔢 Estadísticas de Tercios
+                        <span class="info-tooltip" data-tooltip="Divide la ruleta en tres tercios (1-12, 13-24, 25-36) y analiza la frecuencia y rachas de cada sección.">ⓘ</span>
+                    </h4>
+                    <p style="color: white; opacity: 0.9; margin-bottom: 15px; font-size: 0.9em;">
+                        Primer tercio (1-12) | Segundo tercio (13-24) | Tercer tercio (25-36)
+                    </p>
+                    <div id="thirdStatsContainer"></div>
+                </div>
+            </div>
+
+            <div id="limboStats" style="display: none; margin-top: 30px;">
+                <h3 style="color: #333; margin-bottom: 20px; font-size: 1.5em;">🚀 Análisis Avanzado de Limbo</h3>
+                
+                <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 25px; border-radius: 15px; margin-bottom: 20px;">
+                    <h4 style="color: white; margin-bottom: 15px; font-size: 1.2em;">
+                        🏆 Top 10 Multiplicadores Más Altos
+                        <span class="info-tooltip" data-tooltip="Los 10 multiplicadores más altos obtenidos durante toda la sesión, mostrando en qué tirada (nonce) ocurrieron.">ⓘ</span>
+                    </h4>
+                    <div id="topMultipliersContainer"></div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 25px; border-radius: 15px;">
+                    <h4 style="color: white; margin-bottom: 15px; font-size: 1.2em;">
+                        ⏱️ Tiradas sin Multiplicadores Altos
+                        <span class="info-tooltip" data-tooltip="Muestra el máximo número de tiradas consecutivas sin alcanzar cada umbral de multiplicador. Útil para entender la frecuencia de multiplicadores altos.">ⓘ</span>
+                    </h4>
+                    <p style="color: white; opacity: 0.9; margin-bottom: 15px; font-size: 0.9em;">
+                        Máximas rachas consecutivas sin alcanzar estos multiplicadores
+                    </p>
+                    <div id="limboStreaksContainer"></div>
+                </div>
+            </div>
+
+            <div id="diceStats" style="display: none; margin-top: 30px;">
+                <h3 style="color: #333; margin-bottom: 20px; font-size: 1.5em;">🎲 Análisis Avanzado de Dice</h3>
+                
+                <div style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); padding: 25px; border-radius: 15px; margin-bottom: 20px;">
+                    <h4 style="color: white; margin-bottom: 15px; font-size: 1.2em;">
+                        📊 Resultados Extremos
+                        <span class="info-tooltip" data-tooltip="Muestra la frecuencia de resultados muy bajos y muy altos, que corresponden a multiplicadores de 100x, 250x, 500x y 1000x.">ⓘ</span>
+                    </h4>
+                    <p style="color: white; opacity: 0.9; margin-bottom: 15px; font-size: 0.9em;">
+                        Frecuencia de valores muy bajos y muy altos (multiplicadores altos)
+                    </p>
+                    <div id="diceExtremesContainer"></div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); padding: 25px; border-radius: 15px;">
+                    <h4 style="color: white; margin-bottom: 15px; font-size: 1.2em;">
+                        🔥 Rachas sin Extremos
+                        <span class="info-tooltip" data-tooltip="Máximas tiradas consecutivas sin obtener resultados extremos (≤1 o ≥99), que representan multiplicadores de 100x.">ⓘ</span>
+                    </h4>
+                    <p style="color: white; opacity: 0.9; margin-bottom: 15px; font-size: 0.9em;">
+                        Máximas tiradas consecutivas sin resultados extremos
+                    </p>
+                    <div id="diceStreaksContainer"></div>
                 </div>
             </div>
         </div>
@@ -367,7 +636,6 @@
                 currentGame === 'mines' ? 'block' : 'none';
         });
 
-        // Implementación EXACTA del algoritmo Provably Fair de Stake
         function byteGenerator(serverSeed, clientSeed, nonce, cursor) {
             let currentRound = cursor;
             let currentRoundCursor = 0;
@@ -446,7 +714,6 @@
 
         function calculateDice(serverSeed, clientSeed, nonce) {
             const floats = generateFloats(serverSeed, clientSeed, nonce, 0, 1);
-            // Documentación oficial: (float * 10001) / 100
             const result = (floats[0] * 10001) / 100;
             
             const hash = CryptoJS.HmacSHA256(`${clientSeed}:${nonce}:0`, serverSeed).toString().substring(0, 8);
@@ -460,11 +727,8 @@
 
         function calculateLimbo(serverSeed, clientSeed, nonce) {
             const floats = generateFloats(serverSeed, clientSeed, nonce, 0, 1);
-            const houseEdge = 0.99; // 1% house edge
+            const houseEdge = 0.99;
             
-            // Documentación oficial de Stake:
-            // const floatPoint = 1e8 / (float * 1e8) * houseEdge;
-            // const crashPoint = Math.floor(floatPoint * 100) / 100;
             const floatPoint = (1e8 / (floats[0] * 1e8)) * houseEdge;
             const result = Math.max(1, Math.floor(floatPoint * 100) / 100);
             
@@ -479,11 +743,9 @@
 
         function calculateMines(serverSeed, clientSeed, nonce, minesCount) {
             const gridSize = 25;
-            // Generar floats según cantidad de minas
             const floats = generateFloats(serverSeed, clientSeed, nonce, 0, minesCount);
             const positions = [];
             
-            // Fisher-Yates shuffle según documentación oficial
             const deck = Array.from({length: gridSize}, (_, i) => i);
             
             for (let i = 0; i < minesCount; i++) {
@@ -533,7 +795,6 @@
             
             calculatedResults = [];
 
-            // Procesar en chunks para no bloquear la UI
             const chunkSize = 1000;
             let processed = 0;
 
@@ -550,7 +811,6 @@
                 
                 processed = end;
                 
-                // Actualizar progreso
                 const progress = ((processed / rounds) * 100).toFixed(1);
                 document.getElementById('loading').innerHTML = `
                     <div class="spinner"></div>
@@ -559,7 +819,6 @@
                 `;
                 
                 if (processed < rounds) {
-                    // Permitir que el navegador respire entre chunks
                     await new Promise(resolve => setTimeout(resolve, 10));
                     await processChunk();
                 }
@@ -576,7 +835,6 @@
             const resultsDiv = document.getElementById('results');
             const statsDiv = document.getElementById('stats');
             
-            // Mostrar estadísticas
             const stats = calculateStats();
             statsDiv.innerHTML = `
                 ${stats.map(stat => `
@@ -587,7 +845,6 @@
                 `).join('')}
             `;
 
-            // Mostrar primeros 50 resultados
             const displayLimit = Math.min(50, calculatedResults.length);
             resultsDiv.innerHTML = `
                 <h3 style="margin-bottom: 15px;">Primeros ${displayLimit} resultados:</h3>
@@ -654,48 +911,81 @@
 
         function showCharts() {
             const chartContainer = document.getElementById('chartContainer');
-            chartContainer.classList.add('active');
             
-            const ctx = document.getElementById('resultChart').getContext('2d');
+            const loadingChart = document.createElement('div');
+            loadingChart.id = 'chartLoading';
+            loadingChart.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(0,0,0,0.9);
+                color: white;
+                padding: 40px 60px;
+                border-radius: 20px;
+                z-index: 10000;
+                text-align: center;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            `;
+            loadingChart.innerHTML = `
+                <div class="spinner"></div>
+                <p style="margin-top: 20px; font-size: 1.2em; font-weight: 600;">Generando gráficos...</p>
+                <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">Esto puede tardar unos segundos</p>
+            `;
+            document.body.appendChild(loadingChart);
             
-            // Destruir gráfico anterior si existe
-            if (window.myChart) {
-                window.myChart.destroy();
-            }
-
-            let chartData = prepareChartData();
-            
-            window.myChart = new Chart(ctx, {
-                type: chartData.type,
-                data: chartData.data,
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            labels: { color: '#333', font: { size: 14 } }
-                        },
-                        title: {
-                            display: true,
-                            text: chartData.title,
-                            color: '#333',
-                            font: { size: 18, weight: 'bold' }
-                        }
-                    },
-                    scales: chartData.scales
+            setTimeout(() => {
+                chartContainer.classList.add('active');
+                
+                const ctx = document.getElementById('resultChart').getContext('2d');
+                
+                if (window.myChart) {
+                    window.myChart.destroy();
                 }
-            });
 
-            // Mostrar estadísticas avanzadas de ruleta
-            if (currentGame === 'roulette') {
-                document.getElementById('rouletteStats').style.display = 'block';
-                calculateRouletteAdvancedStats();
-            } else {
+                let chartData = prepareChartData();
+                
+                window.myChart = new Chart(ctx, {
+                    type: chartData.type,
+                    data: chartData.data,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                labels: { color: '#333', font: { size: 14 } }
+                            },
+                            title: {
+                                display: true,
+                                text: chartData.title,
+                                color: '#333',
+                                font: { size: 18, weight: 'bold' }
+                            }
+                        },
+                        scales: chartData.scales
+                    }
+                });
+
                 document.getElementById('rouletteStats').style.display = 'none';
-            }
+                document.getElementById('limboStats').style.display = 'none';
+                document.getElementById('diceStats').style.display = 'none';
 
-            chartContainer.scrollIntoView({ behavior: 'smooth' });
+                if (currentGame === 'roulette') {
+                    document.getElementById('rouletteStats').style.display = 'block';
+                    calculateRouletteAdvancedStats();
+                } else if (currentGame === 'limbo') {
+                    document.getElementById('limboStats').style.display = 'block';
+                    calculateLimboAdvancedStats();
+                } else if (currentGame === 'dice') {
+                    document.getElementById('diceStats').style.display = 'block';
+                    calculateDiceAdvancedStats();
+                }
+
+                loadingChart.remove();
+                
+                chartContainer.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
         }
 
         function prepareChartData() {
@@ -817,12 +1107,10 @@
         }
 
         function calculateRouletteAdvancedStats() {
-            // 0. Calcular frecuencia de rachas consecutivas sin salir
             const streakThresholds = [130, 160, 190, 220, 300, 350];
             const streakCounts = {};
             streakThresholds.forEach(t => streakCounts[t] = 0);
             
-            // Contar rachas para cada número
             for (let num = 0; num <= 36; num++) {
                 let streak = 0;
                 
@@ -830,7 +1118,6 @@
                     if (result.value !== num) {
                         streak++;
                         
-                        // Verificar si alcanzamos algún umbral
                         streakThresholds.forEach(threshold => {
                             if (streak === threshold) {
                                 streakCounts[threshold]++;
@@ -842,7 +1129,6 @@
                 });
             }
             
-            // 1. Calcular racha máxima sin salir para cada número
             const maxStreaks = {};
             const lastSeen = {};
             const currentStreak = {};
@@ -856,7 +1142,6 @@
             calculatedResults.forEach((result, index) => {
                 const num = result.value;
                 
-                // Actualizar para todos los números excepto el que salió
                 for (let n = 0; n <= 36; n++) {
                     if (n !== num) {
                         if (currentStreak[n].count === 0) {
@@ -864,7 +1149,6 @@
                         }
                         currentStreak[n].count++;
                         
-                        // Actualizar máximo si es necesario
                         if (currentStreak[n].count > maxStreaks[n].streak) {
                             maxStreaks[n] = {
                                 streak: currentStreak[n].count,
@@ -873,14 +1157,12 @@
                             };
                         }
                     } else {
-                        // El número salió, reiniciar su racha
                         currentStreak[n] = { count: 0, startNonce: 0 };
                         lastSeen[n] = index;
                     }
                 }
             });
 
-            // 2. Calcular frecuencia media de aparición
             const appearances = {};
             for (let num = 0; num <= 36; num++) {
                 appearances[num] = [];
@@ -903,8 +1185,7 @@
                 }
             }
 
-            // 3-6. Calcular media de aparición después de X tiradas sin salir
-            const thresholds = [130, 160, 190, 220];
+            const thresholds = [130, 160, 190, 220, 400, 450, 500];
             const afterThreshold = {};
             
             thresholds.forEach(threshold => {
@@ -923,10 +1204,8 @@
                         if (streak === 0) streakStart = index;
                         streak++;
                         
-                        // Verificar umbrales
                         thresholds.forEach(threshold => {
                             if (streak === threshold) {
-                                // Buscar cuándo aparece después
                                 for (let j = index + 1; j < calculatedResults.length; j++) {
                                     if (calculatedResults[j].value === num) {
                                         afterThreshold[threshold][num].push(j - index);
@@ -941,7 +1220,9 @@
                 });
             }
 
-            // Mostrar resultados
+            const colorStats = calculateColorStats();
+            const thirdStats = calculateThirdStats();
+
             displayStreakFrequency(streakCounts);
             displayMaxStreaks(maxStreaks);
             displayAvgFrequency(avgFrequency);
@@ -949,6 +1230,11 @@
             displayAfterThreshold(afterThreshold, 160, 'after160Container');
             displayAfterThreshold(afterThreshold, 190, 'after190Container');
             displayAfterThreshold(afterThreshold, 220, 'after220Container');
+            displayAfterThreshold(afterThreshold, 400, 'after400Container');
+            displayAfterThreshold(afterThreshold, 450, 'after450Container');
+            displayAfterThreshold(afterThreshold, 500, 'after500Container');
+            displayColorStats(colorStats);
+            displayThirdStats(thirdStats);
         }
 
         function displayStreakFrequency(streakCounts) {
@@ -971,7 +1257,6 @@
             const container = document.getElementById('maxStreaksContainer');
             const redNumbers = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];
             
-            // Ordenar por racha más larga
             const sorted = Object.entries(maxStreaks).sort((a, b) => b[1].streak - a[1].streak);
             
             container.innerHTML = sorted.slice(0, 10).map(([num, data]) => {
@@ -1031,14 +1316,14 @@
 
             container.innerHTML = `
                 <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; margin-bottom: 15px;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-bottom: 15px;">
                         ${stats.slice(0, 15).map(item => {
                             const color = item.num == 0 ? '#27ae60' : redNumbers.includes(item.num) ? '#e74c3c' : '#2c3e50';
                             return `
                                 <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; text-align: center;">
                                     <div style="font-size: 1.6em; font-weight: 700; color: ${color}; margin-bottom: 5px;">${item.num}</div>
                                     <div style="font-size: 1.1em; font-weight: 600; color: #333;">${item.avg.toFixed(1)} <small style="font-size: 0.7em;">rolls</small></div>
-                                    <div style="font-size: 0.75em; color: #999; margin-top: 3px;">${item.occurrences} veces</div>
+                                    <div style="font-size: 0.75em; color: #999; margin-top: 3px;">${item.occurrences}x</div>
                                 </div>
                             `;
                         }).join('')}
@@ -1055,13 +1340,379 @@
             `;
         }
 
+        function calculateColorStats() {
+            const redNumbers = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];
+            
+            const colorCounts = { rojo: 0, negro: 0, verde: 0 };
+            calculatedResults.forEach(r => {
+                colorCounts[r.color]++;
+            });
+
+            const maxStreaks = { rojo: 0, negro: 0, verde: 0 };
+            const maxNoStreaks = { rojo: 0, negro: 0, verde: 0 };
+            
+            let currentStreaks = { rojo: 0, negro: 0, verde: 0 };
+            let currentNoStreaks = { rojo: 0, negro: 0, verde: 0 };
+
+            calculatedResults.forEach(r => {
+                const color = r.color;
+                
+                currentStreaks[color]++;
+                maxStreaks[color] = Math.max(maxStreaks[color], currentStreaks[color]);
+                
+                ['rojo', 'negro', 'verde'].forEach(c => {
+                    if (c !== color) {
+                        currentStreaks[c] = 0;
+                        currentNoStreaks[c]++;
+                        maxNoStreaks[c] = Math.max(maxNoStreaks[c], currentNoStreaks[c]);
+                    } else {
+                        currentNoStreaks[c] = 0;
+                    }
+                });
+            });
+
+            return {
+                counts: colorCounts,
+                maxStreaks,
+                maxNoStreaks
+            };
+        }
+
+        function calculateThirdStats() {
+            const thirdCounts = { first: 0, second: 0, third: 0, zero: 0 };
+            
+            calculatedResults.forEach(r => {
+                if (r.value === 0) {
+                    thirdCounts.zero++;
+                } else if (r.value <= 12) {
+                    thirdCounts.first++;
+                } else if (r.value <= 24) {
+                    thirdCounts.second++;
+                } else {
+                    thirdCounts.third++;
+                }
+            });
+
+            const maxStreaks = { first: 0, second: 0, third: 0, zero: 0 };
+            const maxNoStreaks = { first: 0, second: 0, third: 0, zero: 0 };
+            
+            let currentStreaks = { first: 0, second: 0, third: 0, zero: 0 };
+            let currentNoStreaks = { first: 0, second: 0, third: 0, zero: 0 };
+
+            calculatedResults.forEach(r => {
+                let third;
+                if (r.value === 0) third = 'zero';
+                else if (r.value <= 12) third = 'first';
+                else if (r.value <= 24) third = 'second';
+                else third = 'third';
+                
+                currentStreaks[third]++;
+                maxStreaks[third] = Math.max(maxStreaks[third], currentStreaks[third]);
+                
+                ['first', 'second', 'third', 'zero'].forEach(t => {
+                    if (t !== third) {
+                        currentStreaks[t] = 0;
+                        currentNoStreaks[t]++;
+                        maxNoStreaks[t] = Math.max(maxNoStreaks[t], currentNoStreaks[t]);
+                    } else {
+                        currentNoStreaks[t] = 0;
+                    }
+                });
+            });
+
+            return {
+                counts: thirdCounts,
+                maxStreaks,
+                maxNoStreaks
+            };
+        }
+
+        function displayColorStats(colorStats) {
+            const container = document.getElementById('colorStatsContainer');
+            const total = calculatedResults.length;
+            
+            const colorData = [
+                { name: 'Rojo', key: 'rojo', color: '#e74c3c' },
+                { name: 'Negro', key: 'negro', color: '#2c3e50' },
+                { name: 'Verde (0)', key: 'verde', color: '#27ae60' }
+            ];
+
+            container.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                    ${colorData.map(c => `
+                        <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+                            <div style="text-align: center; margin-bottom: 15px;">
+                                <div style="width: 60px; height: 60px; background: ${c.color}; border-radius: 50%; margin: 0 auto 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);"></div>
+                                <h4 style="color: ${c.color}; font-size: 1.4em; margin-bottom: 5px;">${c.name}</h4>
+                            </div>
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 10px;">
+                                <div style="color: #333; font-size: 0.9em; margin-bottom: 8px;">
+                                    <strong>Total:</strong> ${colorStats.counts[c.key]} 
+                                    <span style="color: #666;">(${(colorStats.counts[c.key]/total*100).toFixed(1)}%)</span>
+                                </div>
+                                <div style="color: #333; font-size: 0.9em; margin-bottom: 8px;">
+                                    <strong>🔥 Máx. racha:</strong> ${colorStats.maxStreaks[c.key]} veces
+                                </div>
+                                <div style="color: #333; font-size: 0.9em;">
+                                    <strong>❄️ Máx. sin salir:</strong> ${colorStats.maxNoStreaks[c.key]} veces
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function displayThirdStats(thirdStats) {
+            const container = document.getElementById('thirdStatsContainer');
+            const total = calculatedResults.length;
+            
+            const thirdData = [
+                { name: '1º Tercio (1-12)', key: 'first', color: '#3498db' },
+                { name: '2º Tercio (13-24)', key: 'second', color: '#9b59b6' },
+                { name: '3º Tercio (25-36)', key: 'third', color: '#e67e22' },
+                { name: 'Cero', key: 'zero', color: '#27ae60' }
+            ];
+
+            container.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;">
+                    ${thirdData.map(t => `
+                        <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+                            <div style="text-align: center; margin-bottom: 15px;">
+                                <div style="background: ${t.color}; color: white; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 1.1em; margin-bottom: 10px;">
+                                    ${t.name}
+                                </div>
+                            </div>
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 10px;">
+                                <div style="color: #333; font-size: 0.9em; margin-bottom: 8px;">
+                                    <strong>Total:</strong> ${thirdStats.counts[t.key]} 
+                                    <span style="color: #666;">(${(thirdStats.counts[t.key]/total*100).toFixed(1)}%)</span>
+                                </div>
+                                <div style="color: #333; font-size: 0.9em; margin-bottom: 8px;">
+                                    <strong>🔥 Máx. racha:</strong> ${thirdStats.maxStreaks[t.key]} veces
+                                </div>
+                                <div style="color: #333; font-size: 0.9em;">
+                                    <strong>❄️ Máx. sin salir:</strong> ${thirdStats.maxNoStreaks[t.key]} veces
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function calculateLimboAdvancedStats() {
+            const sorted = [...calculatedResults].sort((a, b) => b.value - a.value);
+            const top10 = sorted.slice(0, 10);
+
+            displayTopMultipliers(top10);
+
+            const thresholds = [30, 50, 100, 250, 500, 1000];
+            const maxStreaks = {};
+            
+            thresholds.forEach(threshold => {
+                let currentStreak = 0;
+                let maxStreak = 0;
+                
+                calculatedResults.forEach(r => {
+                    if (r.value < threshold) {
+                        currentStreak++;
+                        maxStreak = Math.max(maxStreak, currentStreak);
+                    } else {
+                        currentStreak = 0;
+                    }
+                });
+                
+                maxStreaks[threshold] = maxStreak;
+            });
+
+            displayLimboStreaks(maxStreaks);
+        }
+
+        function displayTopMultipliers(top10) {
+            const container = document.getElementById('topMultipliersContainer');
+            
+            container.innerHTML = `
+                <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+                    <div style="display: grid; gap: 12px;">
+                        ${top10.map((item, index) => `
+                            <div style="background: linear-gradient(135deg, ${index === 0 ? '#f39c12' : index === 1 ? '#95a5a6' : index === 2 ? '#cd7f32' : '#ecf0f1'}, 
+                                ${index === 0 ? '#f1c40f' : index === 1 ? '#bdc3c7' : index === 2 ? '#d4915d' : '#f8f9fa'}); 
+                                padding: 15px 20px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between;
+                                box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <div style="font-size: 1.8em; font-weight: 700; color: ${index < 3 ? 'white' : '#333'}; min-width: 40px;">
+                                        ${index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `#${index + 1}`}
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 1.8em; font-weight: 700; color: ${index < 3 ? 'white' : '#e74c3c'};">
+                                            ${item.value.toFixed(2)}x
+                                        </div>
+                                        <div style="font-size: 0.85em; color: ${index < 3 ? 'rgba(255,255,255,0.9)' : '#666'};">
+                                            Nonce: ${item.nonce}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 0.8em; color: ${index < 3 ? 'rgba(255,255,255,0.8)' : '#999'};">
+                                        Hash: ${item.hash}
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function displayLimboStreaks(maxStreaks) {
+            const container = document.getElementById('limboStreaksContainer');
+            
+            const thresholds = Object.entries(maxStreaks).sort((a, b) => parseInt(a[0]) - parseInt(b[0]));
+            
+            container.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px;">
+                    ${thresholds.map(([threshold, streak]) => {
+                        const color = parseInt(threshold) >= 500 ? '#e74c3c' : 
+                                     parseInt(threshold) >= 250 ? '#e67e22' :
+                                     parseInt(threshold) >= 100 ? '#f39c12' :
+                                     parseInt(threshold) >= 50 ? '#f1c40f' : '#3498db';
+                        return `
+                            <div style="background: white; padding: 20px; border-radius: 12px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                                <div style="font-size: 1.2em; font-weight: 600; color: #666; margin-bottom: 10px;">
+                                    Sin multi ≥${threshold}x
+                                </div>
+                                <div style="font-size: 2.5em; font-weight: 700; color: ${color}; margin-bottom: 5px;">
+                                    ${streak}
+                                </div>
+                                <div style="font-size: 0.9em; color: #999;">
+                                    tiradas consecutivas
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        function calculateDiceAdvancedStats() {
+            const extremes = {
+                under0_1: calculatedResults.filter(r => r.value <= 0.1).length,
+                under0_2: calculatedResults.filter(r => r.value <= 0.2).length,
+                under0_5: calculatedResults.filter(r => r.value <= 0.5).length,
+                under1: calculatedResults.filter(r => r.value <= 1).length,
+                over99: calculatedResults.filter(r => r.value >= 99).length,
+                over99_5: calculatedResults.filter(r => r.value >= 99.5).length,
+                over99_8: calculatedResults.filter(r => r.value >= 99.8).length,
+                over99_9: calculatedResults.filter(r => r.value >= 99.9).length
+            };
+
+            displayDiceExtremes(extremes);
+
+            let maxStreakUnder1 = 0, currentStreakUnder1 = 0;
+            let maxStreakOver99 = 0, currentStreakOver99 = 0;
+            
+            calculatedResults.forEach(r => {
+                if (r.value > 1) {
+                    currentStreakUnder1++;
+                    maxStreakUnder1 = Math.max(maxStreakUnder1, currentStreakUnder1);
+                } else {
+                    currentStreakUnder1 = 0;
+                }
+                
+                if (r.value < 99) {
+                    currentStreakOver99++;
+                    maxStreakOver99 = Math.max(maxStreakOver99, currentStreakOver99);
+                } else {
+                    currentStreakOver99 = 0;
+                }
+            });
+
+            displayDiceStreaks({ maxStreakUnder1, maxStreakOver99 });
+        }
+
+        function displayDiceExtremes(extremes) {
+            const container = document.getElementById('diceExtremesContainer');
+            const total = calculatedResults.length;
+            
+            const extremeData = [
+                { label: '≤ 0.1 (multi 1000x)', value: extremes.under0_1, color: '#e74c3c', side: 'bajo' },
+                { label: '≤ 0.2 (multi 500x)', value: extremes.under0_2, color: '#e67e22', side: 'bajo' },
+                { label: '≤ 0.5 (multi 250x)', value: extremes.under0_5, color: '#f39c12', side: 'bajo' },
+                { label: '≤ 1.0 (multi 100x)', value: extremes.under1, color: '#f1c40f', side: 'bajo' },
+                { label: '≥ 99.0 (multi 100x)', value: extremes.over99, color: '#3498db', side: 'alto' },
+                { label: '≥ 99.5 (multi 250x)', value: extremes.over99_5, color: '#2980b9', side: 'alto' },
+                { label: '≥ 99.8 (multi 500x)', value: extremes.over99_8, color: '#8e44ad', side: 'alto' },
+                { label: '≥ 99.9 (multi 1000x)', value: extremes.over99_9, color: '#9b59b6', side: 'alto' }
+            ];
+
+            const lowTotal = extremes.under0_1 + extremes.under0_2 + extremes.under0_5 + extremes.under1;
+            const highTotal = extremes.over99 + extremes.over99_5 + extremes.over99_8 + extremes.over99_9;
+
+            container.innerHTML = `
+                <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); margin-bottom: 20px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                        <div style="text-align: center; padding: 15px; background: #fee; border-radius: 10px;">
+                            <div style="font-size: 0.9em; color: #666; margin-bottom: 5px;">Total lado BAJO</div>
+                            <div style="font-size: 2em; font-weight: 700; color: #e74c3c;">${lowTotal}</div>
+                            <div style="font-size: 0.85em; color: #999;">(${(lowTotal/total*100).toFixed(2)}%)</div>
+                        </div>
+                        <div style="text-align: center; padding: 15px; background: #eef; border-radius: 10px;">
+                            <div style="font-size: 0.9em; color: #666; margin-bottom: 5px;">Total lado ALTO</div>
+                            <div style="font-size: 2em; font-weight: 700; color: #3498db;">${highTotal}</div>
+                            <div style="font-size: 0.85em; color: #999;">(${(highTotal/total*100).toFixed(2)}%)</div>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+                        ${extremeData.map(item => `
+                            <div style="background: ${item.side === 'bajo' ? '#fef5f5' : '#f5f8fe'}; padding: 15px; border-radius: 10px; border-left: 4px solid ${item.color};">
+                                <div style="font-size: 0.85em; color: #666; margin-bottom: 5px;">${item.label}</div>
+                                <div style="font-size: 1.8em; font-weight: 700; color: ${item.color};">${item.value}</div>
+                                <div style="font-size: 0.8em; color: #999;">(${(item.value/total*100).toFixed(3)}%)</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function displayDiceStreaks(streaks) {
+            const container = document.getElementById('diceStreaksContainer');
+            
+            container.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                    <div style="background: white; padding: 25px; border-radius: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+                        <div style="font-size: 1.1em; color: #666; margin-bottom: 15px; font-weight: 600;">
+                            Sin resultado <strong style="color: #e74c3c;">≤ 1.0</strong>
+                        </div>
+                        <div style="font-size: 3em; font-weight: 700; color: #e74c3c; margin-bottom: 10px;">
+                            ${streaks.maxStreakUnder1}
+                        </div>
+                        <div style="font-size: 0.95em; color: #999;">
+                            tiradas consecutivas
+                        </div>
+                    </div>
+                    <div style="background: white; padding: 25px; border-radius: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+                        <div style="font-size: 1.1em; color: #666; margin-bottom: 15px; font-weight: 600;">
+                            Sin resultado <strong style="color: #3498db;">≥ 99.0</strong>
+                        </div>
+                        <div style="font-size: 3em; font-weight: 700; color: #3498db; margin-bottom: 10px;">
+                            ${streaks.maxStreakOver99}
+                        </div>
+                        <div style="font-size: 0.95em; color: #999;">
+                            tiradas consecutivas
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
         function exportToExcel() {
             if (calculatedResults.length === 0) {
                 alert('No hay resultados para exportar');
                 return;
             }
 
-            // Preparar datos según el tipo de juego
             let excelData = [];
             const timestamp = new Date().toLocaleString('es-ES');
             const serverSeed = document.getElementById('serverSeed').value;
@@ -1111,7 +1762,6 @@
                     break;
             }
 
-            // Crear hoja de información
             const infoData = [
                 ['Información de Verificación Provably Fair'],
                 [''],
@@ -1125,23 +1775,18 @@
                 ['Estadísticas:']
             ];
 
-            // Agregar estadísticas específicas
             const stats = calculateStats();
             stats.forEach(stat => {
                 infoData.push([stat.label + ':', stat.value]);
             });
 
-            // Crear libro de trabajo
             const wb = XLSX.utils.book_new();
 
-            // Hoja de información
             const wsInfo = XLSX.utils.aoa_to_sheet(infoData);
             XLSX.utils.book_append_sheet(wb, wsInfo, 'Información');
 
-            // Hoja de resultados
             const wsResults = XLSX.utils.json_to_sheet(excelData);
             
-            // Ajustar ancho de columnas
             const maxWidth = 50;
             const wscols = Object.keys(excelData[0] || {}).map(key => {
                 const maxLen = Math.max(
@@ -1154,7 +1799,6 @@
 
             XLSX.utils.book_append_sheet(wb, wsResults, 'Resultados');
 
-            // Si hay muchos resultados, crear hoja de resumen
             if (calculatedResults.length > 100) {
                 let summaryData = [];
                 
@@ -1213,13 +1857,10 @@
                 XLSX.utils.book_append_sheet(wb, wsSummary, 'Resumen Estadístico');
             }
 
-            // Generar nombre de archivo
             const fileName = `Stake_${currentGame}_${serverSeed.substring(0, 8)}_${new Date().getTime()}.xlsx`;
             
-            // Descargar archivo
             XLSX.writeFile(wb, fileName);
             
-            // Mensaje de confirmación
             const notification = document.createElement('div');
             notification.style.cssText = `
                 position: fixed;
@@ -1245,25 +1886,5 @@
             }, 3000);
         }
     </script>
-    <style>
-        @keyframes slideIn {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        @keyframes fadeOut {
-            from {
-                opacity: 1;
-            }
-            to {
-                opacity: 0;
-            }
-        }
-    </style>
 </body>
 </html>
